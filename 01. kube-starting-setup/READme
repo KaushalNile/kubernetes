@@ -1,16 +1,62 @@
-We need to create deployment objects.
-Deployment Objects are the configurations understood by K8s to create Pods, Worker Nodes, etc.
+IMPERATIVE APPROACH
 
-kubectl help
+    We need to create deployment objects.
+    Deployment Objects are the configurations understood by K8s to create Pods, Worker Nodes, etc.
 
-docker build -t imageName:tag .
-docker push kaushlnile/imageName:tag
-kubectl create deployment deploymentObjName --image=kaushalnile/imageName:tag
-    This will create the Deployment Object and the Associated Pods and Containers inside them
-    --image flag will search for image in Docker Hub by default.
-    K8s runs on VM on your host. Hence it cannot access the image created locally.
+    kubectl help
 
-kubectl get deployments
-    gets the list of Deployment Objects
-kubectl get pods
-    gets all pods
+    docker build -t imageName:tag .
+    docker push kaushlnile/imageName:tag
+    kubectl create deployment deploymentObjName --image=kaushalnile/imageName:tag
+        This will create the Deployment Object and the Associated Pods and Containers inside them
+        --image flag will search for image in Docker Hub by default.
+        K8s runs on VM on your host. Hence it cannot access the image created locally.
+
+    kubectl get deployments
+        gets the list of Deployment Objects
+    kubectl get pods
+        gets all pods
+
+    Now our containerised app is up and running ... BUT NOT accessible 
+    Pods are made accessible only through SERVICE Objects
+    Service Objects are an abstract way to expose an application running on a set of Pods as a network service.
+    Now There are multiple ways to do so
+    1. To expose deployment 
+            kubectl expose deployment deploymentObjName --type=typeOfExpose --port=portAppIsListeningOn
+                typeOfExpose is the way you wanna expose this deployment
+                    ClusterIP - default type, this will expose the deployment to whole cluster internally
+                    NodePort - this will expose the deployment with IP of worker node
+                    LoadBalancer =  this will expose the deployment on IP, handle the incoming traffic (It has to be configured)
+            kubectl get services
+                our created service will always be in pending state.
+                Once the app is deployed on Cloud Provider and it supports Load Balancer. We'll be able to see the external IP
+            minikube service deploymentObjName
+                this is minikube specific command to get an external IP for our service
+
+    If a container crashes abruptly, the Pod will recreate the container and start serving again.
+    If we don't have auto scaling enabled, but we still wanna scale..
+        kubectl scale deployment/deploymentObjName --replicas=noOfReplicas
+            this will create 'noOfReplicas' number of replica pods running the same container with same configuration.
+            If Load Balancer is installed, it will use these replicas in case of crash.
+
+    UPDATING THE IMAGE IN CONTAINER
+    1. Create an image with new tag
+    2. Push to registry
+    3. Execute following command
+            kubectl set image deployment/deploymentObjName oldImageName:oldTag=newImageName:newTag
+
+    ROLLOUT of updates
+        kubectl rollout history deployment/deploymentObjName
+            all history
+            kubectl rollout history deployment/deploymentObjName --revision=revisionNumber
+                info of that revision
+                
+        kubectl rollout status deployment/deploymentObjName
+            gives a tabular data for all the on going updates for deploymentObjName
+
+        kubectl rollout undo deployment/deploymentObjName
+            rolls back the latest deployment and goes to previous one
+            kubectl rollout undo deployment/deploymentObjName --to-revision=revisionNumber
+                rolls back the latest deployment and goes to 'revisionNumber' deployment
+
+        
