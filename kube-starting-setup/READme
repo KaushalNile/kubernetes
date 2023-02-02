@@ -1,0 +1,16 @@
+We need to create deployment objects.
+Deployment Objects are the configurations understood by K8s to create Pods, Worker Nodes, etc.
+
+kubectl help
+
+docker build -t imageName:tag .
+docker push kaushlnile/imageName:tag
+kubectl create deployment --image=kaushlnile/imageName:tag deploymentObjName
+    This will create the Deployment Object and the Associated Pods and Containers inside them
+    --image flag will search for image in Docker Hub by default.
+    K8s runs on VM on your host. Hence it cannot access the image created locally.
+
+kubectl get deployments
+    gets the list of Deployment Objects
+kubectl get pods
+    gets all pods
