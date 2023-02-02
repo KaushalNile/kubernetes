@@ -5,7 +5,7 @@ kubectl help
 
 docker build -t imageName:tag .
 docker push kaushlnile/imageName:tag
-kubectl create deployment --image=kaushlnile/imageName:tag deploymentObjName
+kubectl create deployment deploymentObjName --image=kaushalnile/imageName:tag
     This will create the Deployment Object and the Associated Pods and Containers inside them
     --image flag will search for image in Docker Hub by default.
     K8s runs on VM on your host. Hence it cannot access the image created locally.
