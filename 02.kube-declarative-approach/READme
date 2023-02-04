@@ -3,7 +3,7 @@ DECLARATIVE APPROACH
     Just as we used docker-compose to replace the multiple docker command.
     In k8s we have .yaml files with configurations for resources (deployment, services, etc)
     Refer deployment.yaml for creating Deployemnt (More details on keys in kube docs)
-    kubectl apply -f=configFile1Name.yaml,configFile2Name.yaml 
+    kubectl apply -f configFile1Name.yaml,configFile2Name.yaml 
         creates resources based on config from file
-    kubectl delete -f=configFile1Name.yaml,configFile2Name.yaml
+    kubectl delete -f configFile1Name.yaml,configFile2Name.yaml
         deleted resources related to configfile
