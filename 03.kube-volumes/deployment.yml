@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-volumes-dep
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: kube-volumes
+  template: 
+    metadata:
+      labels: 
+        app: kube-volumes
+    spec:
+      containers:
+        - name: kube-volumes-pod
+          image: kaushalnile/kube-volumes:v2
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /app/story
+              name: kube-volumes-volm
+      volumes:
+        - name: kube-volumes-volm
+          # emptyDir: {}
+          # hostPath:
+          #   path: /data # folder in remote machine that will be mounted to mountPath in containers
+          #   type: DirectoryOrCreate # Access Directory if found or Create if not found
+          persistentVolumeClaim:
+            claimName: kube-pers-volumes-claim
