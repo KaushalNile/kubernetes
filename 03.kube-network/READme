@@ -1,0 +1,14 @@
+Pod Internal Communication :
+    2 containers running in same Pod can access each other through 'localhost'
+
+Cluster Internal Communication :
+    Container from 1 Pod can communicate with containers from other Pod in 3 ways:
+        - Using the IP address of the service
+            we can get that by running 'kubectl get services'
+        - Using the default environment variable exposed by the service
+            name of env is 'serviceName_SERVICE_HOST'
+            if serviceName contains dash(-), it'll be replaced with underscore(_), and alphabets all caps.
+        - Using the deafult internal DNS provided by that service 
+            internal DNS is accessed by 'serviceName.namespace'
+        - In this example auth-service is ClusterIP because we don't want to expose it to the outside world.
+        - tasks-service and users-service is LoadBalancer because we want to expose it and balance the load if replicas are created
