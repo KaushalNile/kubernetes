@@ -1,24 +1,24 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment # type of resource
 metadata:
   name: second-app-deployment
 spec:
-  replicas: 1
+  replicas: 1 # replicas to create of Pod
   selector:
-    matchLabels:
+    matchLabels: # run Pods with these labels
       app: second-app
       tier: backend
   template:
     metadata: 
-      labels:
+      labels: # to tag a Pod with labels
         app: second-app
         tier: backend
-    spec: 
-      containers:
+    spec: # specification of Pod
+      containers: # list of containers
         - name: second-node
-          image: academind/kub-first-app:2
+          image: kaushalnile/kube-setup
           imagePullPolicy: Always
-          livenessProbe: 
+          livenessProbe: # health check configurations
             httpGet:
               path: /
               port: 8080

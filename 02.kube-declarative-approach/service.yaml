@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: backend
 spec:
-  selector: 
+  selector: # labels list to serve for
     app: second-app
-  ports:
+  ports: # list of ports
     - protocol: 'TCP'
       port: 80
       targetPort: 8080
